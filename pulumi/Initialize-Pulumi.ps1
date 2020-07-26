@@ -135,6 +135,7 @@ catch {
 
 # Install the NPM packages needed by Pulumi
 
+<#
 try {
     npm install
     Write-Host "[INFO] Successfully installed required NPM packages for Pulumi" -ForegroundColor Cyan
@@ -143,6 +144,7 @@ catch {
     Write-Host "[ERROR] Failed to install required NPM packages for Pulumi" -ForegroundColor Red
     exit -1
 }
+#>
 
 # Log on to Azure
 
@@ -231,7 +233,7 @@ catch {
 
 Remove-Item -Path "index.ts" -force
 
-$pulumiStarterIndexUri = "https://github.com/MatthewHarrisZA/welcometothecloud/blob/master/pulumi/starter_index.ts"
+$pulumiStarterIndexUri = "https://raw.githubusercontent.com/MatthewHarrisZA/welcometothecloud/master/pulumi/starter_index.ts"
 
 Invoke-WebRequest -Uri $pulumiStarterIndexUri -OutFile "index.ts"
 
