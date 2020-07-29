@@ -135,7 +135,6 @@ catch {
 
 # Install the NPM packages needed by Pulumi
 
-<#
 try {
     npm install
     Write-Host "[INFO] Successfully installed required NPM packages for Pulumi" -ForegroundColor Cyan
@@ -144,7 +143,6 @@ catch {
     Write-Host "[ERROR] Failed to install required NPM packages for Pulumi" -ForegroundColor Red
     exit -1
 }
-#>
 
 # Log on to Azure
 
