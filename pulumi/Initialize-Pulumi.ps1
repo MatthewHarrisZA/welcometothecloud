@@ -85,25 +85,24 @@ $netscopeCertFilePath = "$($env:ProgramData)\Netskope\STAgent\download\nscacert.
 
 if(Test-Path $netscopeCertFilePath) {
     Write-Host "[INFO] NetSkope certificate succesfully located" -ForegroundColor Cyan
-} else {
-    Write-Host "[ERROR] Netskope certificate could not be found at '$netscopeCertFilePath'" -ForegroundColor Red
-    exit -1
-}
 
-try {
-    setx REQUESTS_CA_BUNDLE $netscopeCertFilePath | Out-Null
-    Write-Host "[INFO] Successfully set REQUESTS_CA_BUNDLE env variable to $netscopeCertFilePath" -ForegroundColor Cyan
-}
-catch {
-    Write-Host "[ERROR] Failed to set REQUESTS_CA_BUNDLE env variable to $netscopeCertFilePath" -ForegroundColor Red
-    exit -1
+    try {
+        setx REQUESTS_CA_BUNDLE $netscopeCertFilePath | Out-Null
+        Write-Host "[INFO] Successfully set REQUESTS_CA_BUNDLE env variable to $netscopeCertFilePath" -ForegroundColor Cyan
+    }
+    catch {
+        Write-Host "[ERROR] Failed to set REQUESTS_CA_BUNDLE env variable to $netscopeCertFilePath" -ForegroundColor Red
+        exit -1
+    }
+} else {
+    Write-Host "[Warning] Netskope certificate could not be found at '$netscopeCertFilePath'. If you have a differnt type of security software installed you will need to ensure that the 'EQUESTS_CA_BUNDLE' ENV is set and references the location of your organizations CA public cert bundle." -ForegroundColor Yellow
 }
 
 # Create devops folder
 
 try {
     if(Test-Path "devops") {
-        Write-Host "[ERROR] 'devops' folder already exists. To reinitialize this project please completly remove the 'devops' folder." -ForegroundColor Red
+        Write-Host "[ERROR] 'devops' folder already exists. To reinitialize this project please completly remove the 'devops' folder and run this script again." -ForegroundColor Red
         exit -1
     }
     else {
@@ -219,6 +218,8 @@ try {
     pulumi config set containerName nyan
     pulumi config set containerImageName daviey/nyan-cat-web
     pulumi config set dnsNameLabel $dnsNameLabel
+    # This is just for demonstartion purposes to show how to set a secret, it is not used in the script.
+    pulumi config set --secret dbPassword S3cr37
     
     Write-Host "[INFO] Succesfully set example config for sandbox stack" -ForegroundColor Cyan
 }
